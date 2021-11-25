@@ -4,4 +4,6 @@ const sayHello = () => {
 
 console.log(("b" + "a" + +"a" + "a").toLowerCase());
 
+console.log("master");
+
 // Change
