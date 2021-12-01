@@ -25,8 +25,9 @@ const isNumber = function (num) {
 // Запрос значений переменных с валидацией
 const asking = () => {
 	do {
-		screenPrice = +prompt("Сколько будет стоить данная работа?", "12000").trim();
+		screenPrice = +prompt("Сколько будет стоить данная работа?", "12000");
 	} while (!isNumber(screenPrice));
+
 	const fastAsking = confirm("Вы хотите быстро заполнить переменные title, screens, adaptive ?"); // Для ускорения тестирования
 	title = fastAsking ? "КалькуляторВёрстки" : prompt("Как называется ваш проект?", "КалькуляторВёрстки");
 	screens = fastAsking ? "Простые, Сложные" : prompt("Какие типы экранов нужно разработать?", "Простые, Сложные, Интерактивные");
@@ -45,7 +46,7 @@ const getAllServicePrice = () => {
 			service2 = fastAsking ? "Разработка корзины" : prompt("Какой ещё дополнительный тип услуг нужен?", "Разработка корзины");
 		}
 		do {
-			increment = +prompt("Сколько это будет стоить?", "5000").trim();
+			increment = +prompt("Сколько это будет стоить?", "5000");
 		} while (!isNumber(increment));
 		sum += increment;
 	}
