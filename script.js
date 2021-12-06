@@ -27,7 +27,7 @@ const appData = {
 			appData.screenPrice = +prompt("Сколько будет стоить данная работа?", "12000");
 		} while (!appData.isNumber(appData.screenPrice));
 
-		// Типы экранов и их стоимость
+		// Типы экранов и их стоимость => в массив объектов
 		for (let i = 0; i < 2; i++) {
 			let name;
 
@@ -42,10 +42,10 @@ const appData = {
 			appData.screens.push({ id: i, name: name, price: price });
 		}
 
-		// Сумма работы и разработки экранов
-		for (let screen of appData.screens) {
-			appData.screenPrice += +screen.price;
-		}
+		// Общая сумма: Стоимость работы + Типы экранов (сумма из массива)
+		appData.screenPrice = appData.screens.reduce((sum, curent) => {
+			return sum + +curent.price;
+		}, appData.screenPrice);
 
 		// Дополнительные тип услуг
 		for (let i = 0; i < 2; i++) {
@@ -59,7 +59,13 @@ const appData = {
 			do {
 				price = prompt("Сколько это будет стоить?", "5000");
 			} while (!appData.isNumber(price));
-			appData.services[name] = +price;
+
+			if (appData.services.hasOwnProperty([name])) {
+				name = name + " " + parseInt(i + 1);
+				appData.services[name] = +price;
+			} else {
+				appData.services[name] = +price;
+			}
 		}
 
 		// Расчет стоимости дополнительный услуг
@@ -107,9 +113,18 @@ const appData = {
 		}
 	},
 
+	/* Блок выполнения команд */
+	start: () => {
+		appData.asking();
+		appData.addPrices();
+		appData.getFullPrice(appData.screenPrice, appData.allServicePrices);
+		appData.getServicePercentPrices(appData.fullPrice, appData.rollback);
+		appData.getTitle(appData.title);
+		appData.logger();
+	},
+
 	/* Блок отображения логов */
 	logger: () => {
-		// console.log(appData.screens.toLowerCase().split(", "));
 		console.log(appData.getRollbackMessage(appData.fullPrice));
 		console.log("Стоимость за вычетом процента отката посреднику: ", appData.servicePercentPrice);
 		console.log("");
@@ -126,16 +141,7 @@ const appData = {
 		console.log("~ appData.fullPrice", appData.fullPrice);
 		console.log("~ appData.servicePercentPrice", appData.servicePercentPrice);
 		console.log("~ appData.screens", appData.screens);
-	},
-
-	/* Блок выполнения команд */
-	start: () => {
-		appData.asking();
-		appData.addPrices();
-		appData.getFullPrice(appData.screenPrice, appData.allServicePrices);
-		appData.getServicePercentPrices(appData.fullPrice, appData.rollback);
-		appData.getTitle(appData.title);
-		appData.logger();
+		console.log("~ appData.services", appData.services);
 	},
 };
 
