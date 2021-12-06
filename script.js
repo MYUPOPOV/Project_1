@@ -14,10 +14,11 @@ const appData = {
 
 	// Запрос значений переменных с валидацией
 	asking: function () {
-		// Для ускорения тестирования:
-		const fastAsking = confirm("Вы хотите быстро заполнить переменные title, adaptive ?");
-		appData.title = fastAsking ? "КалькуляторВёрстки" : prompt("Как называется ваш проект?", "КалькуляторВёрстки");
-		appData.adaptive = fastAsking ? true : confirm("Нужен ли адаптив на сайте?");
+		do {
+			appData.title = prompt("Как называется ваш проект?", "КалькуляторВёрстки");
+		} while (appData.isNumber(appData.title));
+
+		appData.adaptive = confirm("Нужен ли адаптив на сайте?");
 	},
 
 	addPrices: function () {
@@ -28,7 +29,12 @@ const appData = {
 
 		// Типы экранов и их стоимость
 		for (let i = 0; i < 2; i++) {
-			let name = prompt("Какие типы экранов нужно разработать?", "Простые, Сложные, Интерактивные");
+			let name;
+
+			do {
+				name = prompt("Какие типы экранов нужно разработать?", "Простые, Сложные, Интерактивные");
+			} while (appData.isNumber(name));
+
 			let price;
 			do {
 				price = prompt("Сколько это будет стоить?", "1000");
@@ -44,7 +50,12 @@ const appData = {
 		// Дополнительные тип услуг
 		for (let i = 0; i < 2; i++) {
 			let price = 0;
-			let name = prompt("Какой дополнительный тип услуг нужен?", "Разработка модального окна");
+			let name;
+
+			do {
+				name = prompt("Какой дополнительный тип услуг нужен?", "Разработка модального окна");
+			} while (appData.isNumber(name));
+
 			do {
 				price = prompt("Сколько это будет стоить?", "5000");
 			} while (!appData.isNumber(price));
@@ -121,7 +132,6 @@ const appData = {
 	start: () => {
 		appData.asking();
 		appData.addPrices();
-		appData.getAllServicePrice();
 		appData.getFullPrice(appData.screenPrice, appData.allServicePrices);
 		appData.getServicePercentPrices(appData.fullPrice, appData.rollback);
 		appData.getTitle(appData.title);
