@@ -3,40 +3,57 @@
 
 const appData = {
 	title: "", // Переменные asking()
-	screens: "",
+	screens: [],
 	screenPrice: 0,
 	adaptive: true,
 	services: {}, // getAllServicePrice()
 	allServicePrices: 0,
 	fullPrice: 0, // getFullPrice()
 	servicePercentPrice: 0, // getRollbackMessage())
-	rollback: 20,
+	rollback: 10,
 
 	// Запрос значений переменных с валидацией
 	asking: function () {
+		// Для ускорения тестирования:
+		const fastAsking = confirm("Вы хотите быстро заполнить переменные title, adaptive ?");
+		appData.title = fastAsking ? "КалькуляторВёрстки" : prompt("Как называется ваш проект?", "КалькуляторВёрстки");
+		appData.adaptive = fastAsking ? true : confirm("Нужен ли адаптив на сайте?");
+	},
+
+	addPrices: function () {
+		// Стоимость работы
 		do {
 			appData.screenPrice = +prompt("Сколько будет стоить данная работа?", "12000");
 		} while (!appData.isNumber(appData.screenPrice));
-		// Для ускорения тестирования:
-		const fastAsking = confirm("Вы хотите быстро заполнить переменные title, screens, adaptive ?");
-		appData.title = fastAsking ? "КалькуляторВёрстки" : prompt("Как называется ваш проект?", "КалькуляторВёрстки");
-		appData.screens = fastAsking ? "Простые, Сложные" : prompt("Какие типы экранов нужно разработать?", "Простые,      Сложные,    Интерактивные");
-		appData.adaptive = fastAsking ? true : confirm("Нужен ли адаптив на сайте?");
 
+		// Типы экранов и их стоимость
 		for (let i = 0; i < 2; i++) {
-			let name;
-			let increment = 0;
-			// const fastAsking = confirm("Вы хотите быстро заполнить переменные service1, service2 ?"); // Для ускорения тестирования
-
-			if (i === 0) {
-				appData.service1 = fastAsking ? "Разработка модального окна" : prompt("Какой дополнительный тип услуг нужен?", "Разработка модального окна");
-			} else {
-				appData.service2 = fastAsking ? "Разработка корзины" : prompt("Какой ещё дополнительный тип услуг нужен?", "Разработка корзины");
-			}
+			let name = prompt("Какие типы экранов нужно разработать?", "Простые, Сложные, Интерактивные");
+			let price;
 			do {
-				increment = +prompt("Сколько это будет стоить?", "5000");
-			} while (!appData.isNumber(increment));
-			sum += increment;
+				price = prompt("Сколько это будет стоить?", "1000");
+			} while (!appData.isNumber(price));
+			appData.screens.push({ id: i, name: name, price: price });
+		}
+
+		// Сумма работы и разработки экранов
+		for (let screen of appData.screens) {
+			appData.screenPrice += +screen.price;
+		}
+
+		// Дополнительные тип услуг
+		for (let i = 0; i < 2; i++) {
+			let price = 0;
+			let name = prompt("Какой дополнительный тип услуг нужен?", "Разработка модального окна");
+			do {
+				price = prompt("Сколько это будет стоить?", "5000");
+			} while (!appData.isNumber(price));
+			appData.services[name] = +price;
+		}
+
+		// Расчет стоимости дополнительный услуг
+		for (let key in appData.services) {
+			appData.allServicePrices += appData.services[key];
 		}
 	},
 
@@ -45,21 +62,15 @@ const appData = {
 		return !isNaN(parseFloat(num)) && isFinite(num);
 	},
 
-	// Расчет стоимости дополнительный услуг
-	// getAllServicePrice: () => {
-	// 	let sum = 0;
-	// 	appData.allServicePrices = sum;
-	// },
-
 	// Расчет полной цены
-	getFullPrice: function (screenPrice, allServicePrices) {
+	getFullPrice: (screenPrice, allServicePrices) => {
 		appData.fullPrice = +screenPrice + +allServicePrices;
 	},
 
 	// Валидация названия проекта
 	getTitle: (title) => {
 		let str = title.trim();
-		AppData.title = str[0].toUpperCase() + str.toLowerCase().slice(1); // ещё можно через regexp
+		appData.title = str[0].toUpperCase() + str.toLowerCase().slice(1); // ещё можно через regexp
 	},
 
 	// Расчитываем цену за вычетом отката посреднику
@@ -87,7 +98,7 @@ const appData = {
 
 	/* Блок отображения логов */
 	logger: () => {
-		console.log(appData.screens.toLowerCase().split(", "));
+		// console.log(appData.screens.toLowerCase().split(", "));
 		console.log(appData.getRollbackMessage(appData.fullPrice));
 		console.log("Стоимость за вычетом процента отката посреднику: ", appData.servicePercentPrice);
 		console.log("");
@@ -103,15 +114,17 @@ const appData = {
 		console.log("~ allServicePrices", appData.allServicePrices);
 		console.log("~ appData.fullPrice", appData.fullPrice);
 		console.log("~ appData.servicePercentPrice", appData.servicePercentPrice);
+		console.log("~ appData.screens", appData.screens);
 	},
 
 	/* Блок выполнения команд */
 	start: () => {
 		appData.asking();
-		// appData.allServicePrices = appData.getAllServicePrice();
-		// appData.fullPrice = appData.getFullPrice(appData.screenPrice, appData.allServicePrices);
-		// appData.servicePercentPrice = appData.getServicePercentPrices(appData.fullPrice, appData.rollback);
-		// appData.title = appData.getTitle(appData.title);
+		appData.addPrices();
+		appData.getAllServicePrice();
+		appData.getFullPrice(appData.screenPrice, appData.allServicePrices);
+		appData.getServicePercentPrices(appData.fullPrice, appData.rollback);
+		appData.getTitle(appData.title);
 		appData.logger();
 	},
 };
