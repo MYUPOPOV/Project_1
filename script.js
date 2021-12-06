@@ -6,8 +6,7 @@ const appData = {
 	screens: "",
 	screenPrice: 0,
 	adaptive: true,
-	service1: 0, // getAllServicePrice()
-	service2: 0,
+	services: {}, // getAllServicePrice()
 	allServicePrices: 0,
 	fullPrice: 0, // getFullPrice()
 	servicePercentPrice: 0, // getRollbackMessage())
@@ -23,19 +22,12 @@ const appData = {
 		appData.title = fastAsking ? "КалькуляторВёрстки" : prompt("Как называется ваш проект?", "КалькуляторВёрстки");
 		appData.screens = fastAsking ? "Простые, Сложные" : prompt("Какие типы экранов нужно разработать?", "Простые,      Сложные,    Интерактивные");
 		appData.adaptive = fastAsking ? true : confirm("Нужен ли адаптив на сайте?");
-	},
 
-	// Универсальный метод для проверки на число (Урок 5. Практика)
-	isNumber: function (num) {
-		return !isNaN(parseFloat(num)) && isFinite(num);
-	},
-
-	// Расчет стоимости дополнительный услуг
-	getAllServicePrice: () => {
-		let sum = 0;
-		let increment;
-		const fastAsking = confirm("Вы хотите быстро заполнить переменные service1, service2 ?"); // Для ускорения тестирования
 		for (let i = 0; i < 2; i++) {
+			let name;
+			let increment = 0;
+			// const fastAsking = confirm("Вы хотите быстро заполнить переменные service1, service2 ?"); // Для ускорения тестирования
+
 			if (i === 0) {
 				appData.service1 = fastAsking ? "Разработка модального окна" : prompt("Какой дополнительный тип услуг нужен?", "Разработка модального окна");
 			} else {
@@ -46,23 +38,33 @@ const appData = {
 			} while (!appData.isNumber(increment));
 			sum += increment;
 		}
-		return sum;
 	},
+
+	// Универсальный метод для проверки на число (Урок 5. Практика)
+	isNumber: function (num) {
+		return !isNaN(parseFloat(num)) && isFinite(num);
+	},
+
+	// Расчет стоимости дополнительный услуг
+	// getAllServicePrice: () => {
+	// 	let sum = 0;
+	// 	appData.allServicePrices = sum;
+	// },
 
 	// Расчет полной цены
 	getFullPrice: function (screenPrice, allServicePrices) {
-		return +screenPrice + +allServicePrices;
+		appData.fullPrice = +screenPrice + +allServicePrices;
 	},
 
 	// Валидация названия проекта
 	getTitle: (title) => {
 		let str = title.trim();
-		return str[0].toUpperCase() + str.toLowerCase().slice(1); // ещё можно через regexp
+		AppData.title = str[0].toUpperCase() + str.toLowerCase().slice(1); // ещё можно через regexp
 	},
 
 	// Расчитываем цену за вычетом отката посреднику
 	getServicePercentPrices: (fullPrice, rollback) => {
-		return Math.ceil(fullPrice - (fullPrice * +rollback) / 100);
+		appData.servicePercentPrice = Math.ceil(fullPrice - (fullPrice * +rollback) / 100);
 	},
 
 	// Показываем тип переменных
@@ -70,7 +72,7 @@ const appData = {
 		console.log(variable + ", тип данных: " + typeof variable);
 	},
 
-	// Показываем скидку
+	// Расчтёт скидку
 	getRollbackMessage: (price) => {
 		if (price > 30000) {
 			return "Даем скидку в 10%";
@@ -106,10 +108,10 @@ const appData = {
 	/* Блок выполнения команд */
 	start: () => {
 		appData.asking();
-		appData.allServicePrices = appData.getAllServicePrice();
-		appData.fullPrice = appData.getFullPrice(appData.screenPrice, appData.allServicePrices);
-		appData.servicePercentPrice = appData.getServicePercentPrices(appData.fullPrice, appData.rollback);
-		appData.title = appData.getTitle(appData.title);
+		// appData.allServicePrices = appData.getAllServicePrice();
+		// appData.fullPrice = appData.getFullPrice(appData.screenPrice, appData.allServicePrices);
+		// appData.servicePercentPrice = appData.getServicePercentPrices(appData.fullPrice, appData.rollback);
+		// appData.title = appData.getTitle(appData.title);
 		appData.logger();
 	},
 };
