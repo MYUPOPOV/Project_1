@@ -1,8 +1,35 @@
 /* Урок 7 */
 /* Блок объявления переменных  */
 
+// Выполнение функции appData.start() с её всплывающими окнами пока что блокирую
+const title = document.getElementsByTagName("h1")[0];
+const calcBtn = document.getElementsByClassName("handler_btn");
+const plusBtn = document.querySelector(".screen-btn");
+const otherItemsPercent = document.querySelectorAll(".other-items" && ".percent");
+const otherItemsNumber = document.querySelectorAll(".other-items" && ".number");
+const rollbackInput = document.querySelector(".rollback > .main-controls__range > [type=range]");
+const rollbackSpan = document.querySelector(".rollback > .main-controls__range > .range-value");
+const totalInputs = document.getElementsByClassName("total-input");
+let screenVar = document.querySelectorAll(".screen");
+
+console.log("");
+console.log("~ title", title);
+console.log("~ countBtn", calcBtn);
+console.log("~ plusBtn", plusBtn);
+console.log("~ otherItemsPercent", otherItemsPercent);
+console.log("~ otherItemsNumber", otherItemsNumber);
+console.log("~ rollbackInput", rollbackInput);
+console.log("~ rollbackSpan", rollbackSpan);
+console.log("");
+console.log("~ Все инпуты с классом total-input:");
+const arrayTotalInputs = Array.from(totalInputs);
+arrayTotalInputs.forEach((item) => {
+	console.log(item);
+});
+console.log("");
+console.log("~ screenVar", screenVar);
+
 const appData = {
-	title: "", // Переменные asking()
 	screens: [],
 	screenPrice: 0,
 	adaptive: true,
@@ -145,4 +172,4 @@ const appData = {
 	},
 };
 
-appData.start();
+// appData.start();
