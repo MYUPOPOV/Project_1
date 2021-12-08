@@ -5,27 +5,50 @@
 const title = document.getElementsByTagName("h1")[0];
 const calcBtn = document.getElementsByClassName("handler_btn");
 const plusBtn = document.querySelector(".screen-btn");
-const otherItemsPercent = document.querySelectorAll(".other-items" && ".percent");
-const otherItemsNumber = document.querySelectorAll(".other-items" && ".number");
+
+const otherItemsPercent1 = document.querySelectorAll(".other-items.percent")[0];
+const otherItemsPercent2 = document.querySelectorAll(".other-items.percent")[1];
+
+const otherItemsNumber1 = document.querySelectorAll(".other-items.number")[0];
+const otherItemsNumber2 = document.querySelectorAll(".other-items.number")[1];
+const otherItemsNumber3 = document.querySelectorAll(".other-items.number")[2];
+const otherItemsNumber4 = document.querySelectorAll(".other-items.number")[3];
+const otherItemsNumber5 = document.querySelectorAll(".other-items.number")[4];
+
 const rollbackInput = document.querySelector(".rollback > .main-controls__range > [type=range]");
 const rollbackSpan = document.querySelector(".rollback > .main-controls__range > .range-value");
-const totalInputs = document.getElementsByClassName("total-input");
+
+const totalInput1 = document.getElementsByClassName("total-input")[0];
+const totalInput2 = document.getElementsByClassName("total-input")[0];
+const totalInput3 = document.getElementsByClassName("total-input")[0];
+const totalInput4 = document.getElementsByClassName("total-input")[0];
+const totalInput5 = document.getElementsByClassName("total-input")[0];
+
 let screenVar = document.querySelectorAll(".screen");
 
 console.log("");
 console.log("~ title", title);
 console.log("~ countBtn", calcBtn);
 console.log("~ plusBtn", plusBtn);
-console.log("~ otherItemsPercent", otherItemsPercent);
-console.log("~ otherItemsNumber", otherItemsNumber);
+console.log("");
+console.log("~ otherItemsPercent1", otherItemsPercent1);
+console.log("~ otherItemsPercent2", otherItemsPercent2);
+console.log("");
+console.log("~ otherItemsNumber1", otherItemsNumber1);
+console.log("~ otherItemsNumber2", otherItemsNumber2);
+console.log("~ otherItemsNumber3", otherItemsNumber3);
+console.log("~ otherItemsNumber4", otherItemsNumber4);
+console.log("~ otherItemsNumber5", otherItemsNumber5);
+console.log("");
+console.log("");
 console.log("~ rollbackInput", rollbackInput);
 console.log("~ rollbackSpan", rollbackSpan);
 console.log("");
-console.log("~ Все инпуты с классом total-input:");
-const arrayTotalInputs = Array.from(totalInputs);
-arrayTotalInputs.forEach((item) => {
-	console.log(item);
-});
+console.log("~ totalInput1", totalInput1);
+console.log("~ totalInput2", totalInput1);
+console.log("~ totalInput3", totalInput1);
+console.log("~ totalInput4", totalInput1);
+console.log("~ totalInput5", totalInput1);
 console.log("");
 console.log("~ screenVar", screenVar);
 
