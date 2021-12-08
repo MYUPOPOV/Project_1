@@ -3,54 +3,64 @@
 
 // Выполнение функции appData.start() с её всплывающими окнами пока что блокирую
 const title = document.getElementsByTagName("h1")[0];
-const calcBtn = document.getElementsByClassName("handler_btn");
+const calcBtnStart = document.getElementsByClassName("handler_btn")[0];
+// console.log("~ calcBtnStart", calcBtnStart);
+const calcBtnReset = document.getElementsByClassName("handler_btn")[1];
+// console.log("~ calcBtnReset", calcBtnReset);
 const plusBtn = document.querySelector(".screen-btn");
 
-const otherItemsPercent1 = document.querySelectorAll(".other-items.percent")[0];
-const otherItemsPercent2 = document.querySelectorAll(".other-items.percent")[1];
+const percentTabletAdaptation = document.querySelectorAll(".other-items.percent")[0];
+// console.log(percentTabletAdaptation);
+const percentMobileAdaptation = document.querySelectorAll(".other-items.percent")[1];
+// console.log(percentMobileAdaptation);
 
-const otherItemsNumber1 = document.querySelectorAll(".other-items.number")[0];
-const otherItemsNumber2 = document.querySelectorAll(".other-items.number")[1];
-const otherItemsNumber3 = document.querySelectorAll(".other-items.number")[2];
-const otherItemsNumber4 = document.querySelectorAll(".other-items.number")[3];
-const otherItemsNumber5 = document.querySelectorAll(".other-items.number")[4];
+const numberYandexCounter = document.querySelectorAll(".other-items.number")[0];
+// console.log(numberYandexCounter);
+const numberGoogleCounter = document.querySelectorAll(".other-items.number")[1];
+// console.log(numberGoogleCounter);
+const numberFormSend = document.querySelectorAll(".other-items.number")[2];
+// console.log(numberFormSend);
+const numberServerUpload = document.querySelectorAll(".other-items.number")[3];
+// console.log(numberServerUpload);
+const numberTesting = document.querySelectorAll(".other-items.number")[4];
+// console.log(numberTesting);
 
 const rollbackInput = document.querySelector(".rollback > .main-controls__range > [type=range]");
 const rollbackSpan = document.querySelector(".rollback > .main-controls__range > .range-value");
 
-const totalInput1 = document.getElementsByClassName("total-input")[0];
-const totalInput2 = document.getElementsByClassName("total-input")[0];
-const totalInput3 = document.getElementsByClassName("total-input")[0];
-const totalInput4 = document.getElementsByClassName("total-input")[0];
-const totalInput5 = document.getElementsByClassName("total-input")[0];
+const totalLayout = document.getElementsByClassName("total-input")[0];
+const totalScreens = document.getElementsByClassName("total-input")[1];
+const totalInput3 = document.getElementsByClassName("total-input")[2];
+const totalInput4 = document.getElementsByClassName("total-input")[3];
+const totalInput5 = document.getElementsByClassName("total-input")[4];
 
 let screenVar = document.querySelectorAll(".screen");
 
-console.log("");
-console.log("~ title", title);
-console.log("~ countBtn", calcBtn);
-console.log("~ plusBtn", plusBtn);
-console.log("");
-console.log("~ otherItemsPercent1", otherItemsPercent1);
-console.log("~ otherItemsPercent2", otherItemsPercent2);
-console.log("");
-console.log("~ otherItemsNumber1", otherItemsNumber1);
-console.log("~ otherItemsNumber2", otherItemsNumber2);
-console.log("~ otherItemsNumber3", otherItemsNumber3);
-console.log("~ otherItemsNumber4", otherItemsNumber4);
-console.log("~ otherItemsNumber5", otherItemsNumber5);
-console.log("");
-console.log("");
-console.log("~ rollbackInput", rollbackInput);
-console.log("~ rollbackSpan", rollbackSpan);
-console.log("");
-console.log("~ totalInput1", totalInput1);
-console.log("~ totalInput2", totalInput1);
-console.log("~ totalInput3", totalInput1);
-console.log("~ totalInput4", totalInput1);
-console.log("~ totalInput5", totalInput1);
-console.log("");
-console.log("~ screenVar", screenVar);
+// console.log("");
+// console.log("~ title", title);
+// console.log("~ countBtn", calcBtn);
+// console.log("~ plusBtn", plusBtn);
+// console.log("");
+// console.log("~ otherItemsPercent1", otherItemsPercent1);
+// console.log("~ otherItemsPercent2", otherItemsPercent2);
+// console.log("");
+// console.log("~ otherItemsNumber1", otherItemsNumber1);
+// console.log("~ otherItemsNumber2", otherItemsNumber2);
+// console.log("~ otherItemsNumber3", otherItemsNumber3);
+// console.log("~ otherItemsNumber4", otherItemsNumber4);
+// console.log("~ otherItemsNumber5", otherItemsNumber5);
+// console.log("");
+// console.log("");
+// console.log("~ rollbackInput", rollbackInput);
+// console.log("~ rollbackSpan", rollbackSpan);
+// console.log("");
+// console.log("~ totalInput1", totalInput1);
+// console.log("~ totalInput2", totalInput1);
+// console.log("~ totalInput3", totalInput1);
+// console.log("~ totalInput4", totalInput1);
+// console.log("~ totalInput5", totalInput1);
+// console.log("");
+// console.log("~ screenVar", screenVar);
 
 const appData = {
 	screens: [],
