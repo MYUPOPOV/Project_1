@@ -1,4 +1,4 @@
-/* Урок 7 */
+/* Урок 12 */
 /* Блок объявления переменных  */
 
 // Выполнение функции appData.start() с её всплывающими окнами пока что блокирую
@@ -31,26 +31,23 @@ const totalPercentPrice = document.getElementsByClassName("total-input")[4];
 let screens = document.querySelectorAll(".screen");
 
 const appData = {
-	// services: {}, // getAllServicePrice()
-	// fullPrice: 0, // getFullPrice()
-	// servicePercentPrice: 0, // getRollbackMessage())
-	// rollback: 10,
-	// adaptive: true,
-
 	screens: [], // Экраны
 	screenPrice: 0, // Сумма стоимости всех экранов appData.screenPrice += +screen.price;
-	screenNumber: 0,
+	screenNumber: 0, // Количество экранов
 
 	servicesPercent: {}, //С вёрстки ДопПоцентные
 	servicesNumber: {}, // С вёрстки ДопЧисленные
 	servicePricesPercent: 0, // Сумма ДопПоцентные
 	servicePricesNumber: 0, // Сумма ДопЧисленные
 
+	rollback: 0,
+
 	/* Запускает функционал */
 	init: function () {
 		appData.addTitle(); // добавляем название документа
 		startBtn.addEventListener("click", appData.start); // Слушаем кнопку Раасчитать
 		plusBtn.addEventListener("click", appData.addScreenBlock); // Слушаем кнопку Добавить тип экрана
+		inputRange.addEventListener("change", appData.rangeChange);
 	},
 
 	/* Показываем название документа/вкладки */
@@ -61,29 +58,51 @@ const appData = {
 	/* Блок выполнения команд по кнопке Рассчитать (+ лог объекта) */
 	start: () => {
 		appData.addScreens();
-		appData.addServises();
-		appData.addPrices();
-		appData.showResult();
 
-		// appData.getFullPrice(appData.screenPrice, appData.allServicePrices);
-		// appData.getServicePercentPrices(appData.fullPrice, appData.rollback);
-		// appData.logger();
-
-		console.log(appData);
+		if (
+			!appData.screens.find((screen) => {
+				return screen.name === "Тип экранов" || screen.price <= 0;
+			})
+		) {
+			appData.addServises();
+			appData.addPrices();
+			appData.showResult();
+			console.log(appData);
+			console.log("Типы экранов заполнены корректно");
+			appData.refreshVariables();
+		} else {
+			alert("Один из типов экрана или количество заполнено некорректно");
+			appData.refreshVariables();
+		}
 	},
 
+	/* Добавляем значение ползунка отката */
+	rangeChange: function () {
+		inputRangeValue.innerHTML = inputRange.value + "%";
+		appData.rollback = inputRange.value;
+	},
+
+	/* Обновляем переменные чтобы значения не накладывались друг на друга */
+	refreshVariables: function () {
+		appData.screens = [];
+		appData.screenPrice = 0;
+		appData.screenNumber = 0;
+		appData.servicesPercent = {};
+		appData.servicesNumber = {};
+		appData.servicePricesPercent = 0;
+		appData.servicePricesNumber = 0;
+	},
+
+	/* Показываем все значения */
 	showResult: function () {
 		totalLayout.value = appData.screenPrice;
-
 		appData.screens.forEach((screen) => {
-			console.log(screen.count);
 			appData.screenNumber += +screen.count;
 		});
-
 		totalScreens.value = appData.screenNumber;
 		totalAddServices.value = +appData.servicePricesNumber + +appData.servicePricesPercent;
 		totalPrice.value = appData.fullPrice;
-		// totalPercentPrice.value = document.getElementsByClassName("total-input")[4];
+		totalPercentPrice.value = appData.servicePercentPrice;
 	},
 
 	/* Добавлем в appData.screens[{}] значения блоков типа экрана  */
@@ -135,53 +154,22 @@ const appData = {
 		for (let screen of appData.screens) {
 			appData.screenPrice += +screen.price;
 		}
-
-		// servicesPercent: {}, //С вёрстки ДопПоцентные
-		// servicesNumber: {},  // С вёрстки ДопЧисленные
-		// servicePricesPercent: 0,
-		// servicePricesNumber: 0,
-
 		for (let key in appData.servicesNumber) {
 			appData.servicePricesNumber += appData.servicesNumber[key];
 		}
-
 		for (let key in appData.servicesPercent) {
 			appData.servicePricesPercent += appData.screenPrice * (appData.servicesPercent[key] / 100);
 		}
-
 		appData.fullPrice = +appData.screenPrice + +appData.servicePricesNumber + +appData.servicePricesPercent;
-	},
-
-	// Расчет полной цены
-	getFullPrice: (screenPrice, allServicePrices) => {},
-
-	// Валидация названия проекта
-	getTitle: (title) => {
-		let str = title.trim();
-		appData.title = str[0].toUpperCase() + str.toLowerCase().slice(1); // ещё можно через regexp
+		appData.servicePercentPrice = Math.ceil(appData.fullPrice - (appData.fullPrice * +appData.rollback) / 100);
 	},
 
 	// Расчитываем цену за вычетом отката посреднику
-	getServicePercentPrices: (fullPrice, rollback) => {
-		appData.servicePercentPrice = Math.ceil(fullPrice - (fullPrice * +rollback) / 100);
-	},
+	getServicePercentPrices: (fullPrice, rollback) => {},
 
 	// Показываем тип переменных
 	showTypeOf: (variable) => {
 		console.log(variable + ", тип данных: " + typeof variable);
-	},
-
-	// Расчтёт скидку
-	getRollbackMessage: (price) => {
-		if (price > 30000) {
-			return "Даем скидку в 10%";
-		} else if (price > 15000 && price <= 30000) {
-			return "Даем скидку в 5%";
-		} else if (price > 0 && price <= 15000) {
-			return "Скидка не предусмотрена";
-		} else {
-			return "Что-то пошло не так";
-		}
 	},
 
 	/* Блок отображения логов */
