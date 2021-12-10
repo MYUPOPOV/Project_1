@@ -47,7 +47,7 @@ const appData = {
 		appData.addTitle(); // добавляем название документа
 		startBtn.addEventListener("click", appData.start); // Слушаем кнопку Раасчитать
 		plusBtn.addEventListener("click", appData.addScreenBlock); // Слушаем кнопку Добавить тип экрана
-		inputRange.addEventListener("change", appData.rangeChange);
+		inputRange.addEventListener("change", appData.rangeChange); // Слушаем ползунок отката
 	},
 
 	/* Показываем название документа/вкладки */
@@ -80,6 +80,10 @@ const appData = {
 	rangeChange: function () {
 		inputRangeValue.innerHTML = inputRange.value + "%";
 		appData.rollback = inputRange.value;
+
+		if (appData.servicePercentPrice > 0) {
+			appData.start();
+		}
 	},
 
 	/* Обновляем переменные чтобы значения не накладывались друг на друга */
@@ -163,9 +167,6 @@ const appData = {
 		appData.fullPrice = +appData.screenPrice + +appData.servicePricesNumber + +appData.servicePricesPercent;
 		appData.servicePercentPrice = Math.ceil(appData.fullPrice - (appData.fullPrice * +appData.rollback) / 100);
 	},
-
-	// Расчитываем цену за вычетом отката посреднику
-	getServicePercentPrices: (fullPrice, rollback) => {},
 
 	// Показываем тип переменных
 	showTypeOf: (variable) => {
