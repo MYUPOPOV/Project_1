@@ -45,9 +45,9 @@ const appData = {
 	/* Запускает функционал */
 	init: function () {
 		appData.addTitle(); // добавляем название документа
-		startBtn.addEventListener("click", appData.start); // Слушаем кнопку Раасчитать
+		startBtn.addEventListener("click", appData.start); // Слушаем кнопку Рассчитать
 		plusBtn.addEventListener("click", appData.addScreenBlock); // Слушаем кнопку Добавить тип экрана
-		inputRange.addEventListener("change", appData.rangeChange); // Слушаем ползунок отката
+		inputRange.addEventListener("input", appData.rangeChange); // Слушаем ползунок отката
 	},
 
 	/* Показываем название документа/вкладки */
@@ -81,7 +81,7 @@ const appData = {
 		inputRangeValue.innerHTML = inputRange.value + "%";
 		appData.rollback = inputRange.value;
 
-		if (appData.servicePercentPrice > 0) {
+		if (appData.fullPrice > 0) {
 			appData.start();
 		}
 	},
@@ -175,7 +175,6 @@ const appData = {
 
 	/* Блок отображения логов */
 	logger: () => {
-		console.log(appData.getRollbackMessage(appData.fullPrice));
 		console.log("Стоимость за вычетом процента отката посреднику: ", appData.servicePercentPrice);
 		console.log("");
 
