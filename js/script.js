@@ -1,5 +1,7 @@
 /* Урок 14 */
 /* Блок объявления переменных  */
+"use strict";
+
 const title = document.getElementsByTagName("h1")[0];
 const startBtn = document.getElementsByClassName("handler_btn")[0];
 const resetBtn = document.getElementsByClassName("handler_btn")[1];
@@ -32,44 +34,46 @@ const appData = {
 	rollback: 0,
 
 	/* Запускает функционал */
-	init: () => {
-		appData.addTitle(); // добавляем название документа
-		startBtn.addEventListener("click", appData.start); // Слушаем кнопку Рассчитать
-		plusBtn.addEventListener("click", appData.addScreenBlock); // Слушаем кнопку Добавить тип экрана
-		inputRange.addEventListener("input", appData.rangeChange); // Слушаем ползунок отката
+	init: function () {
+		this.addTitle(); // добавляем название документа
+		startBtn.addEventListener("click", () => this.start()); // Слушаем кнопку Рассчитать
+		plusBtn.addEventListener("click", this.addScreenBlock.bind(this)); // Слушаем кнопку Добавить тип экрана
+		inputRange.addEventListener("input", () => this.rangeChange()); // Слушаем ползунок отката
+	},
+
+	start: function () {
+		this.addScreens();
+
+		if (
+			!this.screens.find((screen) => {
+				return screen.name === "Тип экранов" || screen.price <= 0;
+			})
+		) {
+			this.addServises();
+			this.addPrices();
+			this.showResult();
+
+			// console.log(appData);
+			// console.log("Типы экранов заполнены корректно");
+			this.refreshVariables();
+		} else {
+			alert("Один из типов экрана или количество заполнено некорректно");
+			this.refreshVariables();
+		}
 	},
 
 	/* Показываем название документа/вкладки */
 	addTitle: () => {
 		document.title = title.textContent;
 	},
-
 	/* Блок выполнения команд по кнопке Рассчитать (+ лог объекта) */
-	start: () => {
-		appData.addScreens();
-		if (
-			!appData.screens.find((screen) => {
-				return screen.name === "Тип экранов" || screen.price <= 0;
-			})
-		) {
-			appData.addServises();
-			appData.addPrices();
-			appData.showResult();
-			console.log(appData);
-			console.log("Типы экранов заполнены корректно");
-			appData.refreshVariables();
-		} else {
-			alert("Один из типов экрана или количество заполнено некорректно");
-			appData.refreshVariables();
-		}
-	},
 
 	/* Добавляем значение ползунка отката */
-	rangeChange: () => {
+	rangeChange: function () {
 		inputRangeValue.innerHTML = inputRange.value + "%";
-		appData.rollback = inputRange.value;
-		if (appData.fullPrice > 0) {
-			appData.start();
+		this.rollback = inputRange.value;
+		if (this.fullPrice > 0) {
+			this.start();
 		}
 	},
 
@@ -97,13 +101,13 @@ const appData = {
 	},
 
 	/* Добавлем в appData.screens[{}] значения блоков типа экрана  */
-	addScreens: () => {
+	addScreens: function () {
 		screens = document.querySelectorAll(".screen");
 		screens.forEach((screen, index) => {
 			const select = screen.querySelector("select");
 			const selectName = select.options[select.selectedIndex].textContent;
 			const input = screen.querySelector("input");
-			appData.screens.push({
+			this.screens.push({
 				id: index,
 				name: selectName,
 				count: +input.value,
@@ -120,13 +124,13 @@ const appData = {
 
 	/* Добавляем в appData.servicesPercent значения ДопПоцентные  и 
                в appData.servicesNumber  значения ДопЧисленные  */
-	addServises: () => {
+	addServises: function () {
 		otherItemsPercent.forEach((item) => {
 			const check = item.querySelector("input[type=checkbox]");
 			const label = item.querySelector("label");
 			const input = item.querySelector("input[type=text]");
 			if (check.checked) {
-				appData.servicesPercent[label.textContent] = +input.value;
+				this.servicesPercent[label.textContent] = +input.value;
 			}
 		});
 		otherItemsNumber.forEach((item) => {
@@ -134,7 +138,7 @@ const appData = {
 			const label = item.querySelector("label");
 			const input = item.querySelector("input[type=text]");
 			if (check.checked) {
-				appData.servicesNumber[label.textContent] = +input.value;
+				this.servicesNumber[label.textContent] = +input.value;
 			}
 		});
 	},
@@ -162,24 +166,22 @@ const appData = {
 	},
 
 	/* Блок отображения логов */
-	logger: () => {
-		console.log("Стоимость за вычетом процента отката посреднику: ", appData.servicePercentPrice);
-		console.log("");
-
-		console.log("Типы данных:");
-		appData.showTypeOf(appData.title);
-		appData.showTypeOf(appData.fullPrice);
-		appData.showTypeOf(appData.adaptive);
-		console.log("");
-
-		console.log("Дополнительные логи:");
-		console.log("~ screenPrice", appData.screenPrice);
-		console.log("~ allServicePrices", appData.allServicePrices);
-		console.log("~ appData.fullPrice", appData.fullPrice);
-		console.log("~ appData.servicePercentPrice", appData.servicePercentPrice);
-		console.log("~ appData.screens", appData.screens);
-		console.log("~ appData.services", appData.services);
-	},
+	// logger: () => {
+	// 	console.log("Стоимость за вычетом процента отката посреднику: ", appData.servicePercentPrice);
+	// 	console.log("");
+	// 	console.log("Типы данных:");
+	// 	appData.showTypeOf(appData.title);
+	// 	appData.showTypeOf(appData.fullPrice);
+	// 	appData.showTypeOf(appData.adaptive);
+	// 	console.log("");
+	// 	console.log("Дополнительные логи:");
+	// 	console.log("~ screenPrice", appData.screenPrice);
+	// 	console.log("~ allServicePrices", appData.allServicePrices);
+	// 	console.log("~ appData.fullPrice", appData.fullPrice);
+	// 	console.log("~ appData.servicePercentPrice", appData.servicePercentPrice);
+	// 	console.log("~ appData.screens", appData.screens);
+	// 	console.log("~ appData.services", appData.services);
+	// },
 };
 
 appData.init();
